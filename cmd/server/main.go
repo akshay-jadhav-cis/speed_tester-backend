@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/akshay-jadhav-cis/broadband-speed-tester/internal/routes"
@@ -13,9 +14,10 @@ func main() {
 	fmt.Println("Hello ")
 	router := gin.Default()
 	config := cors.Config{
-		AllowOrigins: []string{
-			"http://localhost:5000",
-		},
+		AllowOriginFunc: func(origin string) bool {
+        return origin == "http://localhost:5000" ||
+               strings.HasSuffix(origin, ".vercel.app")
+    },
 		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
